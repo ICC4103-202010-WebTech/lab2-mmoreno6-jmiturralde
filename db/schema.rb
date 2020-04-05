@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_144655) do
+ActiveRecord::Schema.define(version: 2020_04_05_171559) do
 
   create_table "customers", force: :cascade do |t|
     t.string "name"
@@ -29,18 +29,24 @@ ActiveRecord::Schema.define(version: 2020_04_05_144655) do
     t.date "start_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "venue_id"
+    t.index ["venue_id"], name: "index_events_on_venue_id"
   end
 
   create_table "orders", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "customer_id"
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
   create_table "tickets", force: :cascade do |t|
     t.integer "price"
-    t.string "type"
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order_id"
+    t.index ["order_id"], name: "index_tickets_on_order_id"
   end
 
   create_table "venues", force: :cascade do |t|
@@ -51,4 +57,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_144655) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "events", "venues"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "tickets", "orders"
 end
